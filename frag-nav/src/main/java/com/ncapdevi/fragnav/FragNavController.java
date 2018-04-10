@@ -29,6 +29,7 @@ import java.util.Stack;
 import static com.ncapdevi.fragnav.tabhistory.FragNavTabHistoryController.CURRENT_TAB;
 import static com.ncapdevi.fragnav.tabhistory.FragNavTabHistoryController.UNIQUE_TAB_HISTORY;
 import static com.ncapdevi.fragnav.tabhistory.FragNavTabHistoryController.UNLIMITED_TAB_HISTORY;
+import static com.ncapdevi.fragnav.tabhistory.FragNavTabHistoryController.CUSTOM_TAB_HISTORY;
 
 /**
  * The class is used to manage navigation through multiple stacks of fragments, as well as coordinate
@@ -121,6 +122,9 @@ public class FragNavController {
                 mFragNavTabHistoryController = new UnlimitedTabHistoryController(fragNavPopController,
                         builder.fragNavSwitchController);
                 break;
+            case CUSTOM_TAB_HISTORY:
+                mFragNavTabHistoryController = builder.getFragNavTabHistoryController(fragNavPopController,
+                        builder.fragNavSwitchController);
         }
 
         mFragNavTabHistoryController.switchTab(mSelectedTabIndex);
@@ -1012,6 +1016,8 @@ public class FragNavController {
         @Nullable
         private FragNavSwitchController fragNavSwitchController;
 
+        private FragNavTabHistoryControllerFactory mFragNavTabHistoryControllerFactory;
+
         public Builder(@Nullable Bundle savedInstanceState, FragmentManager mFragmentManager, int mContainerId) {
             this.mSavedInstanceState = savedInstanceState;
             this.mFragmentManager = mFragmentManager;
@@ -1087,6 +1093,25 @@ public class FragNavController {
         public Builder popStrategy(@FragNavTabHistoryController.PopStrategy int popStrategy) {
             mPopStrategy = popStrategy;
             return this;
+        }
+
+        public static final interface FragNavTabHistoryControllerFactory {
+            public FragNavTabHistoryController build(FragNavPopController fragNavPopController,
+                                                     FragNavSwitchController fragNavSwitchController);
+        }
+
+        /**
+         * @param tabHistoryControllerFactory Implement a custom strategy to handle specific backtrace implementations
+         */
+        public Builder customTabHistoryController(@NonNull FragNavTabHistoryControllerFactory tabHistoryControllerFactory) {
+            mFragNavTabHistoryControllerFactory = tabHistoryControllerFactory;
+            mPopStrategy = CUSTOM_TAB_HISTORY;
+            return this;
+        }
+
+        private FragNavTabHistoryController getFragNavTabHistoryController(FragNavPopController fragNavPopController,
+                                                                           FragNavSwitchController fragNavSwitchController) {
+            return mFragNavTabHistoryControllerFactory.build(fragNavPopController, fragNavSwitchController);
         }
 
         /**

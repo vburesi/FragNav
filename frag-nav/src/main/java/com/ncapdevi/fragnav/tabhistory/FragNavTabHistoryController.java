@@ -16,7 +16,7 @@ public interface FragNavTabHistoryController {
      * Define what happens when we try to pop on a tab where root fragment is at the top
      */
     @Retention(SOURCE)
-    @IntDef({CURRENT_TAB, UNIQUE_TAB_HISTORY, UNLIMITED_TAB_HISTORY})
+    @IntDef({CURRENT_TAB, UNIQUE_TAB_HISTORY, UNLIMITED_TAB_HISTORY, CUSTOM_TAB_HISTORY})
     @interface PopStrategy {
     }
 
@@ -34,6 +34,11 @@ public interface FragNavTabHistoryController {
      * We keep an uncapped history of tabs and we switch to previous tab in history when we pop on root fragment
      */
     int UNLIMITED_TAB_HISTORY = 2;
+
+    /**
+     * The tab history is handled by a user-made class contained in the builder
+     */
+    int CUSTOM_TAB_HISTORY = 3;
 
     boolean popFragments(int popDepth, FragNavTransactionOptions transactionOptions);
 
