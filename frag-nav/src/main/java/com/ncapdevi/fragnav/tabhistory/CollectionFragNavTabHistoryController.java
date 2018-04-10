@@ -10,7 +10,7 @@ import com.ncapdevi.fragnav.FragNavTransactionOptions;
 
 import java.util.ArrayList;
 
-abstract class CollectionFragNavTabHistoryController extends BaseFragNavTabHistoryController {
+public abstract class CollectionFragNavTabHistoryController extends BaseFragNavTabHistoryController {
     private static final String EXTRA_STACK_HISTORY = "EXTRA_STACK_HISTORY";
 
     private FragNavSwitchController fragNavSwitchController;

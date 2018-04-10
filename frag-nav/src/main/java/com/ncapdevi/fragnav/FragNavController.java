@@ -1095,7 +1095,7 @@ public class FragNavController {
             return this;
         }
 
-        public static final interface FragNavTabHistoryControllerFactory {
+        public interface FragNavTabHistoryControllerFactory {
             public FragNavTabHistoryController build(FragNavPopController fragNavPopController,
                                                      FragNavSwitchController fragNavSwitchController);
         }
